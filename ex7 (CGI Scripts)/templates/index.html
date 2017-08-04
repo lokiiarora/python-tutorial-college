@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <title>Example Page</title>
+        <script src="jquery.js"></script>
+    </head>
+    <body>
+            <label for="bname">
+                Book Name:
+                <input id="bname" type="text" required autofocus />
+            <label>
+            <button class="submit" id="bname-btn">
+                Query the Database using book name
+            </button>
+            <br/>
+            <label for="aname">
+                Author Name:
+                <input id="aname" type="text" required/>
+            <label>
+            <button class="submit" id="aname-btn">
+                Query the Database using author name
+            </button>
+        <script type="text/javascript">
+            $("#aname-btn").click(function(){
+                var author=document.getElementById("aname").value;
+                var payload = {"type":"name","name":author};
+                console.log(payload);
+                $.post("/books",payload,function(data,status){
+                    console.log(JSON.parse(data));
+                    console.log(status);
+                })
+            })
+            $("#bname-btn").click(function(){
+                var name=document.getElementById("bname").value;
+                var payload = {"type":"name","name":name};
+                console.log(payload);
+                $.post("/books",payload,function(data,status){
+                    console.log(JSON.parse(data));
+                    console.log(status);
+                })
+            })
+        </script>
+    </body>
+</html>
