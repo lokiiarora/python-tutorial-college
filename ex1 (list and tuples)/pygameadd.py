@@ -1,5 +1,7 @@
 import pygame
 
+# Not sure
+
 #necessary pygame initializing
 pygame.init()
 

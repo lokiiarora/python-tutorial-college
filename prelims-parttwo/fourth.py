@@ -1,4 +1,7 @@
 import sys
+
+# Not sure of the output , pls fix
+
 def printthepattern(x):
     for y in range(0,x):
         for frontspace in range(0,2*(y)):
