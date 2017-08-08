@@ -4,29 +4,35 @@
         <script src="jquery.js"></script>
     </head>
     <body>
-            <label for="bname">
-                Book Name:
-                <input id="bname" type="text" required autofocus />
-            <label>
-            <button class="submit" id="bname-btn">
-                Query the Database using book name
-            </button>
+            <div>
+                <label for="bname">
+                    Book Name:
+                    <input id="bname" type="text" required autofocus />
+                <label>
+                <button class="submit" id="bname-btn">
+                    Query the Database using book name
+                </button>
+            </div>
             <br/>
-            <label for="aname">
-                Author Name:
-                <input id="aname" type="text" required/>
-            <label>
-            <button class="submit" id="aname-btn">
-                Query the Database using author name
-            </button>
+            <div>
+                <label for="aname">
+                    Author Name:
+                    <input id="aname" type="text" required/>
+                <label>
+                <button class="submit" id="aname-btn">
+                    Query the Database using author name
+                </button>
+            </div>
+            <div id="data"></div>
         <script type="text/javascript">
             $("#aname-btn").click(function(){
                 var author=document.getElementById("aname").value;
-                var payload = {"type":"name","name":author};
+                var payload = {"type":"author","name":author};
                 console.log(payload);
                 $.post("/books",payload,function(data,status){
-                    console.log(JSON.parse(data));
+                    console.log(data);
                     console.log(status);
+                    handleAll(data)
                 })
             })
             $("#bname-btn").click(function(){
@@ -34,10 +40,84 @@
                 var payload = {"type":"name","name":name};
                 console.log(payload);
                 $.post("/books",payload,function(data,status){
-                    console.log(JSON.parse(data));
+                    console.log(data);
                     console.log(status);
+                    handleAll(data);
                 })
-            })
+            });
+            function handleAll(data){
+                var datanode= document.getElementById("data");
+                datanode.innerHTML="";
+                if(data.length==0){
+                    datanode.innerHTML = "<strong>No Records for such query found</strong>"
+                }else{
+                    var tableNode= makeTableHead(data[0].length);
+                    console.log(tableNode);
+                    var tb = populateTable(tableNode,data);
+                    tableNode.appendChild(tb);
+                    datanode.appendChild(tableNode);
+                    console.log("done yahan se")
+                }
+            }
+            function makeTableHead(length){
+                var tableEle= document.createElement("table");
+                var tableHead= document.createElement("thead");
+                var tableRow= document.createElement("tr");
+                for(var i=0;i<=length;i++){
+                    var node;
+                    switch(i){
+                        case 0:
+                            node=document.createElement("th");
+                            node.innerHTML = "Book ID";
+                            tableRow.appendChild(node);
+                            break;
+                        case 1:
+                            node=document.createElement("th");
+                            node.innerHTML = "Book Name";
+                            tableRow.appendChild(node);
+                            break;
+                        case 2:
+                            node=document.createElement("th");
+                            node.innerHTML= "Author Name";
+                            tableRow.appendChild(node);
+                            break;
+                        case 3:
+                            node=document.createElement("th");
+                            node.innerHTML= "Price";
+                            tableRow.appendChild(node);
+                            break;
+                    }
+                }
+                tableHead.appendChild(tableRow);
+                tableEle.appendChild(tableHead);
+                return tableEle;
+            }
+            function populateTable(table,data){
+                var tb = document.createElement("tbody");
+                data.map(function(dat){
+                    var tableRow= document.createElement("tr");
+                    dat.map(function(record,index){
+                        var node = document.createElement("td");
+                        node.innerHTML=dat[index];
+                        tableRow.appendChild(node);
+                        return node;
+                    });
+                    tb.appendChild(tableRow)
+                    return tableRow;
+                })
+                // for (var i=0;i<=data.length;i++){
+                //     var tableRow=document.createElement("tr");
+                //     var dat = data[i];
+                //     for(var j=0;j<=data[i].length;j++){
+                //         var node = document.createElement("td");
+                //         // node.innerHTML = dat[j];
+                //         tableRow.appendChild(node);
+                //     }
+                //     tb.appendChild(tableRow);
+                // }
+                // table.appendChild(tb);
+                return tb;
+            }
         </script>
     </body>
 </html>

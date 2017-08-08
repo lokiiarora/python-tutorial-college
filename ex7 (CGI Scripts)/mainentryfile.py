@@ -21,7 +21,7 @@ def namesearch(query):
     iterator.execute("select * from books where bookname like '" + query+ "%' ;")
     return iterator.fetchall()
 def authsearch(query):
-    iterator.execute("select * from books where author like '" + query + "#' ;")
+    iterator.execute("select * from books where author like '" + query + "%' ;")
     return iterator.fetchall()
 
 for i in range(0, len(array)):
@@ -49,7 +49,6 @@ def get_resource(path):  # pragma: no cover
     mimetype = mimetypes.get(ext, "text/html")
     content = get_file(complete_path)
     return Response(content, mimetype=mimetype)
-
 
 @app.route('/books',methods=["POST"])
 def search():
