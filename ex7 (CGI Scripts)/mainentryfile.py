@@ -5,12 +5,17 @@ import os
 array=[["121","Half Girlfriend","Chetan Bhagat", "135"],["123","Harry Potter Series","JK Rowling","200"],["124","One day at a call center","Chetan Bhagat","200"],["125","Best Day Ever","Random Author","100"]]
 db=sqlite3.connect("yada.sqlite")
 iterator = db.cursor()
-# iterator.execute("create table books(customerid , bookname , author, price)")
+try:
+    iterator.execute("create table books(customerid , bookname , author, price)")
+except sqlite3.OperationalError:
+        pass
+finally:
+    print "Tables have been created"
 
-def root_dir():  # pragma: no cover
+def root_dir():  # Get root dir
     return os.path.abspath(os.path.dirname(__file__))
 
-def get_file(filename):  # pragma: no cover
+def get_file(filename):  # Get file name
     try:
         src = os.path.join(root_dir(), filename)
         return open(src).read()
@@ -25,11 +30,7 @@ def authsearch(query):
     return iterator.fetchall()
 
 for i in range(0, len(array)):
-    temp1 = array[i][0]
-    temp2 = array[i][1]
-    temp3 = array[i][2]
-    temp4 = array[i][3]
-    iterator.execute("""insert into books values(?,?,?,?)""",(temp1,temp2,temp3,temp4))
+    iterator.execute("""insert into books values(?,?,?,?)""",(array[i]))
 
 app = Flask(__name__)
 
@@ -38,7 +39,7 @@ def main():
     return render_template('index.html')
 
 @app.route('/<path:path>')
-def get_resource(path):  # pragma: no cover
+def get_resource(path):
     mimetypes = {
         ".css": "text/css",
         ".html": "text/html",
