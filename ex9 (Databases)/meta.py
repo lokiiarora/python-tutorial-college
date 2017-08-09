@@ -1,8 +1,5 @@
 import sqlite3
-import json
-import os
-import sys
-import pandas as pd
+
 
 db=sqlite3.connect("yada.db")
 iterator=db.cursor()
