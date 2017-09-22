@@ -3,3 +3,6 @@ A repository of all the solutions to all tutorial questions from SRM University 
 
 ## Issues and Bugs
 Feel free to point out constructive errors and raise it in the issues section . Criticism is always welcome.
+
+## Caution
+Made using Python 2 . Please use the same or shift the proprietary changes accordingly 
